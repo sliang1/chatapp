@@ -1,23 +1,25 @@
-var name = getQueryVariable('name') || 'Anonymous';
-var room = getQueryVariable('room');
+var name = getQueryVariable('name');
+//var room = getQueryVariable('room');
 var socket = io();
+var $message = jQuery('.messages');
 
-console.log(name + ' wants to join ' + room);
+var momentTimestamp;
 
-jQuery('.room-title').text(room);
+console.log(name + ' wants to join!');
+
+//jQuery('.room-title').text(room);
 
 socket.on('connect', function() {
 	console.log('Connected to socket.io server');
 	socket.emit('joinRoom', {
-		name: name,
-		room: room
+		name: name
 	})
 
 });
 
 socket.on('message', function(message){
-	var momentTimestamp = moment.utc(message.timestamp);
-	var $message = jQuery('.messages');
+	
+	momentTimestamp = moment.utc(message.timestamp);
 
 	console.log('New message: ');
 	console.log(message.text);
@@ -25,6 +27,21 @@ socket.on('message', function(message){
 	$message.append('<p><strong>' + message.name + ' ' +momentTimestamp.local().format ('MMM Do YYYY, h:mm a') + '</p></strong>');
 
 	$message.append('<p>'+ message.text + '</p>');
+
+});
+
+socket.on('historyMessage', function(messages){
+
+	console.log(messages.messageArray.length);
+
+	for(var i=0; i < messages.messageArray.length; i++) {
+		momentTimestamp = moment.utc(Number(messages.messageArray[i].timestamp));
+
+		$message.append('<p>' + messages.messageArray[i].username + ' ' +momentTimestamp.local().format ('MMM Do YYYY, h:mm a') + '</p>');
+
+		$message.append('<p>'+ messages.messageArray[i].content + '</p>');
+	}
+	
 
 });
 
