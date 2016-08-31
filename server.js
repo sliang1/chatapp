@@ -33,6 +33,12 @@ io.on('connection', function (socket) {
 			});
 
 			delete clientsInfo[socket.id];
+
+			for(var i = usernames.length - 1; i >= 0; i--) {
+    			if(usernames[i] === userData.name) {
+       				usernames.splice(i, 1);
+    			}
+			}
 		}
 	});
 
