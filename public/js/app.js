@@ -8,8 +8,6 @@ var momentTimestamp;
 
 console.log(name + ' wants to join!');
 
-//jQuery('.room-title').text(room);
-
 socket.on('connect', function() {
 	console.log('Connected to socket.io server');
 	socket.emit('joinRoom', {
@@ -26,7 +24,7 @@ socket.on('message', function(message){
 	console.log('New message: ');
 	console.log(message.text);
 
-	$message.append('<p><strong>' + message.name + '       ' +momentTimestamp.local().format ('MMM Do YYYY, h:mm a') + '</p></strong>');
+	$message.append('<p><strong>' + message.name + '<span class = "instantMessage">' + momentTimestamp.local().format ('MMM Do YYYY, h:mm a') + '</span></p></strong>');
 	$message.append('<p>'+ message.text + '</p>');
 	$messages.append($message);
 
@@ -38,12 +36,12 @@ socket.on('historyMessage', function(messages){
 	var $message = jQuery('<li class = "list-group-item"></li>');
 
 	for(var i=0; i < messages.messageArray.length; i++) {
-		
+
 		var $message = jQuery('<li class = "list-group-item"></li>');
 		momentTimestamp = moment.utc(Number(messages.messageArray[i].timestamp));
 
-		$message.append('<p>' + messages.messageArray[i].username + ' ' +momentTimestamp.local().format ('MMM Do YYYY, h:mm a') + '</p>');
-		$message.append('<p>'+ messages.messageArray[i].content + '</p>');
+		$message.append('<p class = "historyMessage"><strong>' + messages.messageArray[i].username + '<span class = "instantMessage">' +momentTimestamp.local().format ('MMM Do YYYY, h:mm a') + '</span></p></strong>');
+		$message.append('<p class = "historyMessage">'+ messages.messageArray[i].content + '</p>');
 		$messages.append($message);
 	}
 	

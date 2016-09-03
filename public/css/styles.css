@@ -5,7 +5,20 @@
 	align-items: center;
 }
 
-.horizontal-center {
-	margin: auto;
-	text-align: center;
+h1 {
+	margin: 24px 5px;
+}
+
+.messages p {
+	margin: 5px 0;
+}
+
+
+.instantMessage {
+	font-size: 10px;
+	margin-left: 80px;
+}
+
+.historyMessage {
+	color: #808080;
 }
